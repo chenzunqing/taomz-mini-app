@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.taomz.mini.apps.dao.mapper.activity.NonMemConfigMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.taomz.mini.apps.model.activity.NonMemConfig">
+        <id column="id" property="id" />
+        <result column="activity_id" property="activityId" />
+        <result column="act_prod_id" property="actProdId" />
+        <result column="act_set_stroll_flag" property="actSetStrollFlag" />
+        <result column="stroll_start_time" property="strollStartTime" />
+        <result column="stroll_end_time" property="strollEndTime" />
+        <result column="stroll_total" property="strollTotal" />
+        <result column="stroll_single_num" property="strollSingleNum" />
+        <result column="stroll_charge_flag" property="strollChargeFlag" />
+        <result column="stroll_charge" property="strollCharge" />
+        <result column="agreement_about" property="agreementAbout" />
+        <result column="remark" property="remark" />
+        <result column="sign_up_flag" property="signUpFlag" />
+        <result column="background_img" property="backgroundImg" />
+        <result column="background_color" property="backgroundColor" />
+        <result column="sign_up_start_time" property="signUpStartTime" />
+        <result column="sign_up_end_time" property="signUpEndTime" />
+        <result column="scene_sign_up_flag" property="sceneSignUpFlag" />
+        <result column="scene_up_start_time" property="sceneUpStartTime" />
+        <result column="scene_up_end_time" property="sceneUpEndTime" />
+        <result column="invite_flag" property="inviteFlag" />
+        <result column="invite_mem_num" property="inviteMemNum" />
+        <result column="invite_brand_num" property="inviteBrandNum" />
+        <result column="refund_flag" property="refundFlag" />
+        <result column="refund_start_time" property="refundStartTime" />
+        <result column="refund_end_time" property="refundEndTime" />
+        <result column="status" property="status" />
+        <result column="create_time" property="createTime" />
+        <result column="update_time" property="updateTime" />
+        <result column="share_img" property="shareImg" />
+        <result column="share_title" property="shareTitle" />
+        <result column="share_address" property="shareAddress" />
+        <result column="share_about" property="shareAbout" />
+        <result column="is_open_real" property="isOpenReal" />
+        <result column="prompt_copy" property="promptCopy" />
+        <result column="entry_notice" property="entryNotice" />
+        <result column="qr_code" property="qrCode" />
+        <result column="qr_code_desc" property="qrCodeDesc" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, activity_id, act_prod_id, act_set_stroll_flag, stroll_start_time, stroll_end_time, stroll_total, stroll_single_num, stroll_charge_flag, stroll_charge, agreement_about, remark, sign_up_flag, background_img, background_color, sign_up_start_time, sign_up_end_time, scene_sign_up_flag, scene_up_start_time, scene_up_end_time, invite_flag, invite_mem_num, invite_brand_num, refund_flag, refund_start_time, refund_end_time, status, create_time, update_time, share_img, share_title, share_address, share_about, is_open_real, prompt_copy, entry_notice, qr_code, qr_code_desc
+    </sql>
+
+    <!-- 根据活动ID查询活动招商设置信息 -->
+    <select id="getNonMemConfigByActivityId" resultType="com.taomz.mini.apps.model.activity.NonMemConfig" >
+    SELECT * from t_non_mem_config where status = 1 and activity_id = #{activityId}
+    </select>
+
+</mapper>

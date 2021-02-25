@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.taomz.mini.apps.dao.mapper.brand.BrandOrderPolicyDetailMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.taomz.mini.apps.model.brand.BrandOrderPolicyDetail">
+        <id column="id" property="id" />
+        <result column="policy_id" property="policyId" />
+        <result column="business_id" property="businessId" />
+        <result column="business_name" property="businessName" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, policy_id, business_id, business_name
+    </sql>
+
+</mapper>

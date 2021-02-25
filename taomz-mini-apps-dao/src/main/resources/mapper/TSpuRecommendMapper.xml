@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.taomz.mini.apps.dao.mapper.TSpuRecommendMapper">
+    <select id="getSpuHotList" resultType="com.taomz.mini.apps.model.TSpuRecommend">
+        SELECT
+            tsr.id AS id,
+            tsr.is_switch AS isSwitch,
+            tsr.sort AS sort,
+            ta.`name` AS type
+        FROM
+            t_spu_recommend tsr
+                LEFT JOIN t_category ta ON tsr.type = ta.id
+        WHERE
+            ta.type = 5
+          AND tsr.is_switch = 0
+          AND ta.publish_status = 1
+        ORDER BY
+            tsr.sort,
+            tsr.create_time
+    </select>
+
+    <select id="getSpuHotRecommend" resultType="com.taomz.mini.apps.model.SpuHotRecommend">
+        SELECT
+            tsp.id AS id,
+            tsp.spu_name AS spuName,
+            tsp.main_img AS mainImg,
+            tsp.advertorial AS advertorial
+        FROM
+            t_spu tsp
+                INNER JOIN t_spu_recommend_detail tsrd ON tsrd.spu_id = tsp.id
+        WHERE
+            tsrd.spu_recommend_id = #{spuRecommendId}
+          AND tsp.delete_flag = 1
+          AND tsp.publish_status = 1
+          AND tsp.audit_status = 1
+        ORDER BY
+            tsrd.sort
+    </select>
+</mapper>

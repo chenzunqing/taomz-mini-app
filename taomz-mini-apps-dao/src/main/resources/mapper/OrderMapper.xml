@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.taomz.mini.apps.dao.mapper.OrderMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.taomz.mini.apps.model.Order">
+        <id column="id" property="id" />
+        <result column="order_code" property="orderCode" />
+        <result column="total_fee" property="totalFee" />
+        <result column="payment" property="payment" />
+        <result column="pay_type" property="payType" />
+        <result column="pay_status" property="payStatus" />
+        <result column="order_type" property="orderType" />
+        <result column="order_status" property="orderStatus" />
+        <result column="payment_time" property="paymentTime" />
+        <result column="consign_time" property="consignTime" />
+        <result column="end_time" property="endTime" />
+        <result column="over_time" property="overTime" />
+        <result column="close_time" property="closeTime" />
+        <result column="user_id" property="userId" />
+        <result column="seller_user_id" property="sellerUserId" />
+        <result column="phone" property="phone" />
+        <result column="address" property="address" />
+        <result column="promotions_id" property="promotionsId" />
+        <result column="create_time" property="createTime" />
+        <result column="logistics_num" property="logisticsNum" />
+        <result column="courier_num" property="courierNum" />
+        <result column="sub_user_id" property="subUserId" />
+        <result column="cash_pledge" property="cashPledge" />
+        <result column="invoice_amount" property="invoiceAmount" />
+        <result column="cash_pledge_refund_status" property="cashPledgeRefundStatus" />
+        <result column="cash_pledge_refund_fee" property="cashPledgeRefundFee" />
+        <result column="discount_amount" property="discountAmount" />
+        <result column="refund_fee" property="refundFee" />
+        <result column="pay_code" property="payCode" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, order_code, total_fee, payment, pay_type, pay_status, order_type, order_status, payment_time, consign_time, end_time, over_time, close_time, user_id, seller_user_id, phone, address, promotions_id, create_time, logistics_num, courier_num, sub_user_id, cash_pledge, invoice_amount, cash_pledge_refund_status, cash_pledge_refund_fee, discount_amount, refund_fee, pay_code
+    </sql>
+
+    <update id="modifyOrderStatus">
+        UPDATE t_order
+        SET order_status = #{afterStatus}
+        WHERE order_status = #{afterStatus}
+          AND create_time <![CDATA[ < ]]> #{startTime}
+          AND user_id = #{userId}
+          AND order_type = #{type}
+    </update>
+
+    <select id="queryUserNoPaidOrderCode" resultType="java.lang.String">
+        SELECT order_code
+        FROM t_order
+        WHERE
+              user_id = #{userId}
+          AND order_status = #{status}
+          AND order_type = #{type}
+          AND create_time >= #{startTime}
+          AND create_time &lt;=  #{endTime}
+    </select>
+</mapper>

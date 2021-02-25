@@ -1,0 +1,270 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.taomz.mini.apps.dao.mapper.brand.BrandBasicInfoMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.taomz.mini.apps.model.brand.BrandBasicInfo">
+        <id column="id" property="id"/>
+        <result column="enter_source" property="enterSource"/>
+        <result column="brand_pool_id" property="brandPoolId"/>
+        <result column="brand_name" property="brandName"/>
+        <result column="brand_name_en" property="brandNameEn"/>
+        <result column="trade_types" property="tradeTypes"/>
+        <result column="country_code" property="countryCode"/>
+        <result column="production_address" property="productionAddress"/>
+        <result column="tmall_overseas_shop_flag" property="tmallOverseasShopFlag"/>
+        <result column="tmall_shop_flag" property="tmallShopFlag"/>
+        <result column="main_category" property="mainCategory"/>
+        <result column="auth_channel" property="authChannel"/>
+        <result column="channel_type" property="channelType"/>
+        <result column="channel_company_name" property="channelCompanyName"/>
+        <result column="brand_auth_start_time" property="brandAuthStartTime"/>
+        <result column="brand_auth_expire_time" property="brandAuthExpireTime"/>
+        <result column="sales_amount_on_line" property="salesAmountOnLine"/>
+        <result column="sales_amount_under_line" property="salesAmountUnderLine"/>
+        <result column="brand_idea" property="brandIdea"/>
+        <result column="brand_logo" property="brandLogo"/>
+        <result column="status" property="status"/>
+        <result column="sort" property="sort"/>
+        <result column="initials" property="initials"/>
+        <result column="initiation_amount" property="initiationAmount"/>
+        <result column="product_images" property="productImages"/>
+        <result column="terminal_images" property="terminalImages"/>
+        <result column="interval_min" property="intervalMin"/>
+        <result column="interval_max" property="intervalMax"/>
+        <result column="page_view" property="pageView"/>
+        <result column="follower_num" property="followerNum"/>
+        <result column="advisory_num" property="advisoryNum"/>
+        <result column="actual_page_view" property="actualPageView"/>
+        <result column="actual_follower_num" property="actualFollowerNum"/>
+        <result column="actual_advisory_num" property="actualAdvisoryNum"/>
+        <result column="delete_flag" property="deleteFlag"/>
+        <result column="create_time" property="createTime"/>
+        <result column="create_user_id" property="createUserId"/>
+        <result column="submit_time" property="submitTime"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="remark1" property="remark1"/>
+        <result column="remark2" property="remark2"/>
+        <result column="sub_user_id" property="subUserId"/>
+        <result column="minimum_profit_ratio" property="minimumProfitRatio"/>
+        <result column="highest_profit_ratio" property="highestProfitRatio"/>
+        <result column="highlight" property="highlight"/>
+        <result column="is_price_control" property="isPriceControl"/>
+        <result column="price_control_explain" property="priceControlExplain"/>
+        <result column="is_update" property="isUpdate"/>
+        <result column="is_sample" property="isSample"/>
+        <result column="production_license" property="productionLicense"/>
+        <result column="expiry_time" property="expiryTime"/>
+        <result column="search_num" property="searchNum"/>
+    </resultMap>
+    <resultMap id="exhibitionBrandResultMap" type="com.taomz.mini.apps.dto.brand.BrandInfoDTO">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="brand_name" jdbcType="VARCHAR" property="brandName"/>
+        <result column="brand_logo" jdbcType="VARCHAR" property="brandLogo"/>
+        <result column="booth_number" jdbcType="VARCHAR" property="boothNumber"/>
+        <result column="brand_name_en" jdbcType="VARCHAR" property="brandNameEn"/>
+        <result column="initials" jdbcType="VARCHAR" property="initials"/>
+        <collection property="preferentialList" javaType="java.util.ArrayList" ofType="java.lang.String">
+            <result column="preferential" jdbcType="VARCHAR" />
+        </collection>
+    </resultMap>
+
+    <resultMap id="HomeResultMap" type="com.taomz.mini.apps.dto.brand.SpuRecommendHomeDTO">
+
+        <result column="name" jdbcType="VARCHAR" property="type"/>
+        <collection  property="spuRecDTOList" ofType="com.taomz.mini.apps.dto.brand.SpuRecDTO">
+            <result column="id" jdbcType="INTEGER" property="id"/>
+            <result column="main_img" jdbcType="VARCHAR" property="mainImg"/>
+            <result column="spu_name" jdbcType="INTEGER" property="spuName"/>
+        </collection>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, enter_source, brand_pool_id, brand_name, brand_name_en, trade_types, country_code, production_address, tmall_overseas_shop_flag, tmall_shop_flag, main_category, auth_channel, channel_type, channel_company_name, brand_auth_start_time, brand_auth_expire_time, sales_amount_on_line, sales_amount_under_line, brand_idea, brand_logo, status, sort, initials, initiation_amount, product_images, terminal_images, interval_min, interval_max, page_view, follower_num, advisory_num, actual_page_view, actual_follower_num, actual_advisory_num, delete_flag, create_time, create_user_id, submit_time, update_time, remark1, remark2, sub_user_id, minimum_profit_ratio, highest_profit_ratio, highlight, is_price_control, price_control_explain, is_update, is_sample, production_license, expiry_time, search_num
+    </sql>
+    <select id="queryRecentBrandList" resultType="com.taomz.mini.apps.model.brand.AppBrandBasicInfoRecentDTO">
+        SELECT
+        id,
+        brand_logo,
+        brand_name
+        FROM
+        t_brand_basic_info
+        WHERE
+        DATE_SUB( CURDATE(), INTERVAL 30 DAY ) <![CDATA[ <= ]]> date( submit_time )
+        ORDER BY
+        submit_time DESC
+        LIMIT 4;
+    </select>
+    <select id="getAllExhibitionBrand" resultMap="exhibitionBrandResultMap">
+        SELECT
+        h.id,h.brand_logo,h.brand_name,IFNULL(apply.booth_number,"") booth_number,h.brand_name_en,h.initials,mater.preferential
+        FROM
+        t_brand_basic_info h
+        LEFT JOIN m_activity_apply_investment_brand apply ON h.id = apply.brand_id
+        inner join m_activity_apply a on a.id = apply.apply_id
+        LEFT JOIN t_brand_material_detail mater ON h.id = mater.brand_id
+        <where>
+            apply.audit_state = 4 and
+            a.activity_id in
+            <foreach collection="idList" item="activityId" open="(" close=")" separator=",">
+                #{activityId}
+            </foreach>
+            <if test="brandName != null and brandName != ''">
+                and ((h.brand_name LIKE CONCAT( '%', trim( #{brandName} ), '%' ))
+                or
+                (h.brand_name_en LIKE CONCAT( '%', trim( #{brandName} ), '%' )))
+            </if>
+        </where>
+        order by
+        CASE WHEN initials = '#' then initials END ASC,
+        CASE WHEN initials != '#' then initials END ASC
+    </select>
+    <select id="homeRecommendList"  resultMap="HomeResultMap">
+        SELECT
+            t4.id,
+            t4.main_img,
+            t4.spu_name,
+            t2.`name`
+        FROM
+            t_spu_recommend t1
+            INNER JOIN t_category t2 ON t1.type = t2.id
+            INNER JOIN t_spu_recommend_detail t3 ON t1.id = t3.spu_recommend_id
+            INNER JOIN t_spu t4 ON t4.id = t3.spu_id
+        WHERE
+            t2.type = 8 and t1.is_switch = 0
+        ORDER BY
+            t2.sort,t3.sort ASC
+    </select>
+
+	<select id="queryGMListPage" resultType="com.taomz.mini.apps.dto.brand.GMBrandInfoDTO">
+        SELECT
+            bi.id AS id,
+            bi.brand_name AS brandName,
+            bi.brand_idea AS brandIdea,
+            bi.brand_logo AS brandLogo,
+            tc.`name` AS countryCode,
+            tc.icon AS countryIcon,
+            bi.trade_types AS tradeTypes,
+            bi.auth_channel AS authChannel,
+            bi.main_category AS mainCategory,
+            br.recruit_detail AS recruitDetail,
+            br.view_flag AS viewFlag,
+            bop.content AS policyContent,
+            bop.end_time AS policyEndTime,
+            bi.interval_min AS intervalMin,
+            bi.interval_max AS intervalMax,
+            bi.highlight AS highlight,
+            IF ( DATEDIFF( SYSDATE(), br.create_time ) &lt;= 30, 0, 1 ) AS isNewOn,
+            ROUND(bi.actual_page_view * 0.30 + (bi.actual_advisory_num * 0.20) + (bi.actual_follower_num * 0.20)) AS popularity
+        FROM
+            t_brand_basic_info bi
+            INNER JOIN t_country tc ON tc.`code` = bi.country_code
+            LEFT JOIN t_brand_recruit br ON bi.id = br.brand_id AND br.state = 1
+            LEFT JOIN t_brand_order_policy_detail bopd ON bi.id = bopd.business_id
+            LEFT JOIN t_brand_order_policy bop ON bopd.policy_id = bop.id AND bop.type = 'ORDER_POLICY_BRAND' and bop.end_time &lt;= SYSDATE()
+            <if test="param.brandRecommendId != null">
+                LEFT JOIN t_brand_recommend_detail brd ON bi.id = brd.brand_id
+            </if>
+        WHERE
+            bi.status = 1 AND bi.delete_flag = 0
+            <if test="null != param.categoryItems and param.categoryItems.size() > 0">
+                AND
+                <foreach collection="param.categoryItems" item="item" open="(" separator="OR" close=")">
+                    FIND_IN_SET(#{item}, bi.main_category )
+                </foreach>
+            </if>
+            <if test="null != param.countryCodeItems and param.countryCodeItems.size() > 0">
+                AND
+                <foreach collection="param.countryCodeItems" item="item" open="(" separator="OR" close=")">
+                    bi.country_code = #{item}
+                </foreach>
+            </if>
+            <if test="null != param.tradeTypeItems and param.tradeTypeItems.size() > 0">
+                AND
+                <foreach collection="param.tradeTypeItems" item="item" open="(" separator="OR" close=")">
+                    bi.trade_types = #{item}
+                </foreach>
+            </if>
+            <if test="null != param.authChannelItems and param.authChannelItems.size() > 0">
+                AND
+                <foreach collection="param.authChannelItems" item="item" open="(" separator="OR" close=")">
+                    bi.auth_channel = #{item}
+                </foreach>
+            </if>
+            <if test="null != param.intervalMin">
+                AND bi.interval_min >= #{param.intervalMin}
+            </if>
+            <if test="null != param.intervalMax">
+                AND bi.interval_max <![CDATA[ <= ]]> #{param.intervalMax}
+            </if>
+            <if test="null != param.brandName and param.brandName != ''">
+                AND (bi.brand_name LIKE CONCAT('%',#{param.brandName},'%') or bi.brand_name_en LIKE CONCAT('%',#{param.brandName},'%'))
+            </if>
+            <if test="null != param.minimumProfitRatio">
+                AND bi.minimum_profit_ratio >= #{param.minimumProfitRatio}
+            </if>
+            <if test="null != param.highestProfitRatio">
+                AND bi.highest_profit_ratio <![CDATA[ <= ]]> #{param.highestProfitRatio}
+            </if>
+            <if test="param.brandRecommendId != null">
+                AND brd.brand_recommend_id = #{param.brandRecommendId}
+            </if>
+            <if test="param.brandStewardId != null">
+                <if test="param.brandStewardCountryCode != null and param.brandStewardCountryCode != ''">
+                    AND FIND_IN_SET(bi.country_code, #{param.brandStewardCountryCode})
+                </if>
+            </if>
+        GROUP BY
+            bi.id
+        <choose>
+            <when test="param.sort == 0">
+                ORDER BY popularity DESC, bi.update_time DESC
+            </when>
+            <when test="param.sort == 1">
+                ORDER BY bi.create_time DESC
+            </when>
+            <when test="param.sort == 2">
+                ORDER BY bop.update_time DESC, bi.update_time DESC
+            </when>
+            <when test="param.sort == 3">
+                ORDER BY br.update_time DESC, bi.update_time DESC
+            </when>
+            <otherwise>
+                ORDER BY bi.update_time DESC
+            </otherwise>
+        </choose>
+    </select>
+
+
+    <select id="queryHostBrandListForType" resultType="com.taomz.mini.apps.ext.BrandBasicIfoExt">
+        SELECT
+            bai.id AS brandId,
+            bai.brand_name AS brandName,
+            bai.brand_logo AS brandLogo,
+            bai.brand_idea AS brandIdea,
+            bai.main_category AS mainCategory,
+            tc.`name` AS countryName,
+            b.expent AS expent
+        FROM
+            t_brand_basic_info bai
+            LEFT JOIN t_country tc ON bai.country_code = tc.`code`
+            LEFT JOIN (select bi.create_time AS createTime, bi.brand_id AS brandId,SUM(bi.expent) AS expent from
+            brand_index bi WHERE 1=1
+            <if test="weekOrMonthTime != null and weekOrMonthTime != ''">
+               AND bi.create_time  <![CDATA[ >= ]]>  #{weekOrMonthTime}
+            </if>
+            GROUP BY brand_id ) b ON  bai.id = b.brandId
+        WHERE
+            bai.`status` = 1
+        ORDER BY
+            expent DESC
+    </select>
+
+    <select id="getRelationActivity" resultType="java.lang.String">
+       select relation_activity from m_activity_extend where activity_id = #{activityId}
+    </select>
+    <select id="getBrandTypeTag" resultType="com.taomz.mini.apps.model.brand.BrandRecommend">
+       select  * from t_brand_recommend where is_switch = 0  order by sort,create_time DESC
+    </select>
+</mapper>

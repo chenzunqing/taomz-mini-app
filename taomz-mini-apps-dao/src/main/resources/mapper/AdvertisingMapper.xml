@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.taomz.mini.apps.dao.mapper.AdvertisingMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.taomz.mini.apps.model.Advertising">
+        <id column="id" property="id" />
+        <result column="ads_code" property="adsCode" />
+        <result column="ad_name" property="adName" />
+        <result column="ad_type" property="adType" />
+        <result column="ad_img_url" property="adImgUrl" />
+        <result column="ad_text" property="adText" />
+        <result column="start_time" property="startTime" />
+        <result column="end_time" property="endTime" />
+        <result column="publish_status" property="publishStatus" />
+        <result column="create_time" property="createTime" />
+        <result column="update_time" property="updateTime" />
+        <result column="delete_flag" property="deleteFlag" />
+        <result column="sort" property="sort" />
+        <result column="jump_type" property="jumpType" />
+        <result column="jump_column_value" property="jumpColumnValue" />
+        <result column="jump_url" property="jumpUrl" />
+        <result column="jump_param" property="jumpParam" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, ads_code, ad_name, ad_type, ad_img_url, ad_text, start_time, end_time, publish_status, create_time, update_time, delete_flag, sort, jump_type, jump_column_value, jump_url, jump_param
+    </sql>
+
+    <select id="getAdListByAdsCode" resultType="com.taomz.mini.apps.dto.AdvertisingDTO">
+    SELECT * from t_advertising
+    where delete_flag =1 and publish_status =1 AND ads_code = #{adsCode}
+    and CURRENT_TIMESTAMP between start_time and end_time
+    order by sort
+  </select>
+
+</mapper>

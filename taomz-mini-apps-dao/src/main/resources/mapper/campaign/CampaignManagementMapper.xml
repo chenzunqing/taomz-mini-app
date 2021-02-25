@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.taomz.mini.apps.dao.mapper.campaign.CampaignManagementMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.taomz.mini.apps.model.campaign.CampaignManagement">
+        <id column="id" property="id" />
+        <result column="bussiness_id" property="bussinessId" />
+        <result column="title" property="title" />
+        <result column="type" property="type" />
+        <result column="start_time" property="startTime" />
+        <result column="end_time" property="endTime" />
+        <result column="status" property="status" />
+        <result column="contribution_initial_num" property="contributionInitialNum" />
+        <result column="contribution_login_add_num" property="contributionLoginAddNum" />
+        <result column="contribution_share_add_num" property="contributionShareAddNum" />
+        <result column="fission_share_image" property="fissionShareImage" />
+        <result column="fission_share_title" property="fissionShareTitle" />
+        <result column="fission_share_desc" property="fissionShareDesc" />
+        <result column="update_time" property="updateTime" />
+        <result column="create_time" property="createTime" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, bussiness_id, title, type, start_time, end_time, status, contribution_initial_num, contribution_login_add_num, contribution_share_add_num, fission_share_image, fission_share_title, fission_share_desc, update_time, create_time
+    </sql>
+
+</mapper>

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.taomz.mini.apps.dao.mapper.InvoiceHistoryMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.taomz.mini.apps.model.InvoiceHistory">
+        <id column="id" property="id" />
+        <result column="invoice_type" property="invoiceType" />
+        <result column="title_type" property="titleType" />
+        <result column="order_type" property="orderType" />
+        <result column="order_id" property="orderId" />
+        <result column="title_name" property="titleName" />
+        <result column="duty_paragraph" property="dutyParagraph" />
+        <result column="telephone" property="telephone" />
+        <result column="bank_name" property="bankName" />
+        <result column="bank_account" property="bankAccount" />
+        <result column="invoice_content" property="invoiceContent" />
+        <result column="email" property="email" />
+        <result column="status" property="status" />
+        <result column="create_time" property="createTime" />
+        <result column="create_user_id" property="createUserId" />
+        <result column="register_address" property="registerAddress" />
+        <result column="clerk" property="clerk" />
+        <result column="fphm" property="fphm" />
+        <result column="fpdm" property="fpdm" />
+        <result column="fpqqlsh" property="fpqqlsh" />
+        <result column="url" property="url" />
+        <result column="local_path" property="localPath" />
+        <result column="remark" property="remark" />
+        <result column="kptype" property="kptype" />
+        <result column="flag" property="flag" />
+        <result column="orderno" property="orderno" />
+        <result column="address" property="address" />
+        <result column="deal_flag" property="dealFlag" />
+        <result column="kp_date" property="kpDate" />
+        <result column="notice_phone" property="noticePhone" />
+        <result column="sub_user_id" property="subUserId" />
+        <result column="confirm_user_id" property="confirmUserId" />
+        <result column="confirm_time" property="confirmTime" />
+        <result column="invoice_id" property="invoiceId" />
+        <result column="blue_invoice_id" property="blueInvoiceId" />
+        <result column="category_type" property="categoryType" />
+        <result column="order_fee" property="orderFee" />
+        <result column="invoice_amount" property="invoiceAmount" />
+        <result column="description" property="description" />
+        <result column="receiver_name" property="receiverName" />
+        <result column="receiver_mobile" property="receiverMobile" />
+        <result column="logistics_status" property="logisticsStatus" />
+        <result column="kprq" property="kprq" />
+        <result column="logistics_num" property="logisticsNum" />
+        <result column="courier_num" property="courierNum" />
+        <result column="kp_status" property="kpStatus" />
+        <result column="invoke_count" property="invokeCount" />
+        <result column="kpfs" property="kpfs" />
+        <result column="kp_info" property="kpInfo" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, invoice_type, title_type, order_type, order_id, title_name, duty_paragraph, telephone, bank_name, bank_account, invoice_content, email, status, create_time, create_user_id, register_address, clerk, fphm, fpdm, fpqqlsh, url, local_path, remark, kptype, flag, orderno, address, deal_flag, kp_date, notice_phone, sub_user_id, confirm_user_id, confirm_time, invoice_id, blue_invoice_id, category_type, order_fee, invoice_amount, description, receiver_name, receiver_mobile, logistics_status, kprq, logistics_num, courier_num, kp_status, invoke_count, kpfs, kp_info
+    </sql>
+
+</mapper>

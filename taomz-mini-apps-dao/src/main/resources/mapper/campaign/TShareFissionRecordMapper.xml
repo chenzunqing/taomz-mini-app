@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.taomz.mini.apps.dao.mapper.campaign.TShareFissionRecordMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.taomz.mini.apps.model.campaign.TShareFissionRecord">
+        <id column="id" property="id" />
+        <result column="cm_id" property="cmId" />
+        <result column="p_user_id" property="pUserId" />
+        <result column="user_id" property="userId" />
+        <result column="grade_id" property="gradeId" />
+        <result column="enter_channel" property="enterChannel" />
+        <result column="is_new_user" property="isNewUser" />
+        <result column="create_time" property="createTime" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, cm_id, p_user_id, user_id, grade_id, enter_channel, is_new_user, create_time
+    </sql>
+
+</mapper>

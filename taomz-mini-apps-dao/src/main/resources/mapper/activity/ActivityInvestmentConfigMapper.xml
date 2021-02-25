@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.taomz.mini.apps.dao.mapper.activity.ActivityInvestmentConfigMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.taomz.mini.apps.model.activity.ActivityInvestmentConfig">
+        <id column="id" property="id" />
+        <result column="act_prod_id" property="actProdId" />
+        <result column="activity_id" property="activityId" />
+        <result column="brand_start_time" property="brandStartTime" />
+        <result column="brand_end_time" property="brandEndTime" />
+        <result column="title_flag" property="titleFlag" />
+        <result column="title_fee" property="titleFee" />
+        <result column="title_work_limit_num" property="titleWorkLimitNum" />
+        <result column="title_room_num" property="titleRoomNum" />
+        <result column="title_limit_num" property="titleLimitNum" />
+        <result column="title_num" property="titleNum" />
+        <result column="sponsorship_flag" property="sponsorshipFlag" />
+        <result column="sponsorship_fee" property="sponsorshipFee" />
+        <result column="sponsorship_work_limit_num" property="sponsorshipWorkLimitNum" />
+        <result column="sponsorship_room_num" property="sponsorshipRoomNum" />
+        <result column="sponsorship_limit_num" property="sponsorshipLimitNum" />
+        <result column="sponsorship_num" property="sponsorshipNum" />
+        <result column="sponsorship_buy_max" property="sponsorshipBuyMax" />
+        <result column="booth_flag" property="boothFlag" />
+        <result column="booth_fee" property="boothFee" />
+        <result column="booth_work_limit_num" property="boothWorkLimitNum" />
+        <result column="booth_brand_num" property="boothBrandNum" />
+        <result column="booth_room_num" property="boothRoomNum" />
+        <result column="booth_limit_num" property="boothLimitNum" />
+        <result column="booth_num" property="boothNum" />
+        <result column="booth_buy_max" property="boothBuyMax" />
+        <result column="create_time" property="createTime" />
+        <result column="update_time" property="updateTime" />
+        <result column="delete_flag" property="deleteFlag" />
+        <result column="booth_agreement_id" property="boothAgreementId" />
+        <result column="sponsorship_agreement_id" property="sponsorshipAgreementId" />
+        <result column="title_agreement_id" property="titleAgreementId" />
+        <result column="remark" property="remark" />
+        <result column="booth_no_flag" property="boothNoFlag" />
+        <result column="lodging_flag" property="lodgingFlag" />
+        <result column="virtual_work_num" property="virtualWorkNum" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, act_prod_id, activity_id, brand_start_time, brand_end_time, title_flag, title_fee, title_work_limit_num, title_room_num, title_limit_num, title_num, sponsorship_flag, sponsorship_fee, sponsorship_work_limit_num, sponsorship_room_num, sponsorship_limit_num, sponsorship_num, sponsorship_buy_max, booth_flag, booth_fee, booth_work_limit_num, booth_brand_num, booth_room_num, booth_limit_num, booth_num, booth_buy_max, create_time, update_time, delete_flag, booth_agreement_id, sponsorship_agreement_id, title_agreement_id, remark, booth_no_flag, lodging_flag, virtual_work_num
+    </sql>
+
+    <!-- 根据活动ID查询活动招商设置信息 -->
+    <select id="getInvestmentByActivityId" resultType="com.taomz.mini.apps.dto.activity.ActivityInvestmentConfigDTO" >
+    SELECT * from m_activity_investment_config where delete_flag = 1 and activity_id = #{activityId}
+    </select>
+
+</mapper>

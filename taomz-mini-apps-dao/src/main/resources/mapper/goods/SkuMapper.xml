@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.taomz.mini.apps.dao.mapper.goods.SkuMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.taomz.mini.apps.model.goods.Sku">
+        <id column="id" property="id" />
+        <result column="spu_id" property="spuId" />
+        <result column="sku_name" property="skuName" />
+        <result column="sku_price" property="skuPrice" />
+        <result column="min_buy_num" property="minBuyNum" />
+        <result column="max_buy_num" property="maxBuyNum" />
+        <result column="sku_img_url" property="skuImgUrl" />
+        <result column="stock_num" property="stockNum" />
+        <result column="sell_num" property="sellNum" />
+        <result column="delete_flag" property="deleteFlag" />
+        <result column="create_time" property="createTime" />
+        <result column="update_time" property="updateTime" />
+        <result column="unit" property="unit" />
+        <result column="discount" property="discount" />
+        <result column="sku_value" property="skuValue" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, spu_id, sku_name, sku_price, min_buy_num, max_buy_num, sku_img_url, stock_num, sell_num, delete_flag, create_time, update_time, unit, discount, sku_value
+    </sql>
+
+    <resultMap id="viewResultMap" type="com.taomz.mini.apps.dto.goods.SkuDTO">
+        <id column="id" jdbcType="INTEGER" property="skuId" />
+        <result column="spu_id" jdbcType="INTEGER" property="spuId" />
+        <result column="sku_name" jdbcType="VARCHAR" property="skuName" />
+        <result column="sku_price" jdbcType="DECIMAL" property="skuPrice" />
+        <result column="sku_img_url" jdbcType="VARCHAR" property="skuImgUrl" />
+        <result column="stock_num" jdbcType="INTEGER" property="stockNum" />
+        <result column="sell_num" jdbcType="INTEGER" property="sellNum" />
+        <result column="min_buy_num" jdbcType="INTEGER" property="minBuyNum" />
+        <result column="max_buy_num" jdbcType="INTEGER" property="maxBuyNum" />
+        <result column="unit" jdbcType="VARCHAR" property="unit" />
+        <result column="discount" jdbcType="DECIMAL" property="discount" />
+        <result column="sku_value" jdbcType="DECIMAL" property="skuValue" />
+    </resultMap>
+
+    <select id="getSkuListBySpuId" resultMap="viewResultMap">
+        select *
+        from t_sku
+        where spu_id = #{spuId}
+        <if test="deleteFlag != null">
+            AND delete_flag = #{deleteFlag}
+        </if>
+        order by sku_price asc
+    </select>
+
+    <!--库存扣减-->
+    <update id="decreaseStockNum">
+        UPDATE t_sku SET stock_num= stock_num - #{decreaseNum}, update_time=now()
+        where id= #{skuId}
+          AND stock_num >=  #{decreaseNum}
+    </update>
+
+    <!--库存增加-->
+    <update id="increaseStockNum">
+        UPDATE t_sku
+        SET stock_num =
+            CASE
+                WHEN #{increaseNum} + stock_num > 9999999 THEN
+                    9999999
+                ELSE
+                    #{increaseNum} + stock_num
+                END
+          , update_time=now()
+        WHERE
+            id = #{skuId}
+        <![CDATA[ AND stock_num < 9999999 ]]>
+    </update>
+
+    <!--销量扣减-->
+    <update id="decreaseSellNum">
+        UPDATE t_sku SET sell_num= sell_num - #{decreaseNum}, update_time=now()
+        where id= #{skuId}
+    </update>
+
+    <!--销量增加-->
+    <update id="increaseSellNum">
+        UPDATE t_sku
+        SET sell_num = #{increaseNum} + sell_num,
+            update_time=now()
+        WHERE
+            id = #{skuId}
+    </update>
+</mapper>

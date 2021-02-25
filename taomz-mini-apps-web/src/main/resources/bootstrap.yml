@@ -1,0 +1,32 @@
+#service name
+spring:
+  application:
+    name: taomz-mini-apps
+  cloud:
+    config:
+      name: taomz-mini-apps-application
+      profile: ${config.profile:dev}
+      discovery:
+        enabled: true
+        serviceId: taomz-config-server
+
+#服务注册
+eureka:
+  instance:
+    prefer-ip-address: true
+  client:
+    serviceUrl:
+      defaultZone: http://192.168.168.5:9999/eureka/
+
+#打印SQL日志目录
+log:
+  path: /var/logs/miniApps
+
+#打印SQL信息
+logging:
+  config: classpath:logback-spring.xml
+
+
+
+
+

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.taomz.mini.apps.dao.mapper.goods.SpuExtendMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.taomz.mini.apps.model.goods.SpuExtend">
+        <id column="id" property="id" />
+        <result column="spu_id" property="spuId" />
+        <result column="detail_desc" property="detailDesc" />
+        <result column="spu_param" property="spuParam" />
+        <result column="distribution_policy" property="distributionPolicy" />
+        <result column="remark" property="remark" />
+        <result column="update_time" property="updateTime" />
+        <result column="create_time" property="createTime" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, spu_id, detail_desc, spu_param, distribution_policy, remark, update_time, create_time
+    </sql>
+
+	<select id="getSpuExtendBySpuId" resultType="com.taomz.mini.apps.dto.goods.SpuExtendDTO">
+        SELECT
+            <include refid="Base_Column_List"/>
+        FROM t_spu_extend
+        <where>
+            <if test="spuId != null">
+                AND spu_id = #{spuId}
+            </if>
+        </where>
+    </select>
+
+</mapper>

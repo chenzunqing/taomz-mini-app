@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.taomz.mini.apps.dao.mapper.activity.ActivityMemberConfigMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.taomz.mini.apps.model.activity.ActivityMemberConfig">
+        <id column="id" property="id" />
+        <result column="act_prod_id" property="actProdId" />
+        <result column="activity_id" property="activityId" />
+        <result column="member_start_time" property="memberStartTime" />
+        <result column="member_end_time" property="memberEndTime" />
+        <result column="enter_flag" property="enterFlag" />
+        <result column="enter_start_time" property="enterStartTime" />
+        <result column="enter_end_time" property="enterEndTime" />
+        <result column="enter_total_limit" property="enterTotalLimit" />
+        <result column="enter_limit" property="enterLimit" />
+        <result column="enter_price" property="enterPrice" />
+        <result column="enter_fee_flag" property="enterFeeFlag" />
+        <result column="enter_fee_num" property="enterFeeNum" />
+        <result column="visit_exhibition_flag" property="visitExhibitionFlag" />
+        <result column="visit_exhibition_start_time" property="visitExhibitionStartTime" />
+        <result column="visit_exhibition_end_time" property="visitExhibitionEndTime" />
+        <result column="visit_exhibition_total_limit" property="visitExhibitionTotalLimit" />
+        <result column="visit_exhibition_limit" property="visitExhibitionLimit" />
+        <result column="visit_exhibition_price" property="visitExhibitionPrice" />
+        <result column="visit_exhibition_fee_flag" property="visitExhibitionFeeFlag" />
+        <result column="free_visit_exhibition_limit" property="freeVisitExhibitionLimit" />
+        <result column="lodging_flag" property="lodgingFlag" />
+        <result column="lodging_start_time" property="lodgingStartTime" />
+        <result column="lodging_end_time" property="lodgingEndTime" />
+        <result column="build_room_flag" property="buildRoomFlag" />
+        <result column="fee_lodging_flag" property="feeLodgingFlag" />
+        <result column="fee_lodging_limit" property="feeLodgingLimit" />
+        <result column="lodging_deposit" property="lodgingDeposit" />
+        <result column="lodging_price" property="lodgingPrice" />
+        <result column="lodging_limit" property="lodgingLimit" />
+        <result column="banquet_flag" property="banquetFlag" />
+        <result column="banquet_start_time" property="banquetStartTime" />
+        <result column="banquet_end_time" property="banquetEndTime" />
+        <result column="banquet_total_limit" property="banquetTotalLimit" />
+        <result column="banquet_limit" property="banquetLimit" />
+        <result column="fee_banquet_flag" property="feeBanquetFlag" />
+        <result column="fee_banquet_limit" property="feeBanquetLimit" />
+        <result column="banquet_price" property="banquetPrice" />
+        <result column="apply_enter_num" property="applyEnterNum" />
+        <result column="virtual_apply_enter_num" property="virtualApplyEnterNum" />
+        <result column="apply_visit_exhibition_num" property="applyVisitExhibitionNum" />
+        <result column="apply_banquet_num" property="applyBanquetNum" />
+        <result column="additional_flag" property="additionalFlag" />
+        <result column="agreement_id" property="agreementId" />
+        <result column="remark" property="remark" />
+        <result column="delete_flag" property="deleteFlag" />
+        <result column="audit_flag" property="auditFlag" />
+        <result column="timeout_sign_up_flag" property="timeoutSignUpFlag" />
+        <result column="timeout_sign_up_start_time" property="timeoutSignUpStartTime" />
+        <result column="timeout_sign_up_end_time" property="timeoutSignUpEndTime" />
+        <result column="create_time" property="createTime" />
+        <result column="update_time" property="updateTime" />
+        <result column="refund_flag" property="refundFlag" />
+        <result column="refund_start_time" property="refundStartTime" />
+        <result column="refund_end_time" property="refundEndTime" />
+        <result column="deposit_refund_task_flag" property="depositRefundTaskFlag" />
+        <result column="deposit_invoice_task_flag" property="depositInvoiceTaskFlag" />
+        <result column="package_flag" property="packageFlag" />
+        <result column="package_few" property="packageFew" />
+        <result column="package_price" property="packagePrice" />
+        <result column="package_remind_flag" property="packageRemindFlag" />
+        <result column="package_remind" property="packageRemind" />
+        <result column="is_open_real" property="isOpenReal" />
+        <result column="prompt_copy" property="promptCopy" />
+        <result column="entry_notice" property="entryNotice" />
+        <result column="is_limited" property="isLimited" />
+        <result column="temporary_member_sign_up_flag" property="temporaryMemberSignUpFlag" />
+        <result column="view_enter_num_flag" property="viewEnterNumFlag" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, act_prod_id, activity_id, member_start_time, member_end_time, enter_flag, enter_start_time, enter_end_time, enter_total_limit, enter_limit, enter_price, enter_fee_flag, enter_fee_num, visit_exhibition_flag, visit_exhibition_start_time, visit_exhibition_end_time, visit_exhibition_total_limit, visit_exhibition_limit, visit_exhibition_price, visit_exhibition_fee_flag, free_visit_exhibition_limit, lodging_flag, lodging_start_time, lodging_end_time, build_room_flag, fee_lodging_flag, fee_lodging_limit, lodging_deposit, lodging_price, lodging_limit, banquet_flag, banquet_start_time, banquet_end_time, banquet_total_limit, banquet_limit, fee_banquet_flag, fee_banquet_limit, banquet_price, apply_enter_num, virtual_apply_enter_num, apply_visit_exhibition_num, apply_banquet_num, additional_flag, agreement_id, remark, delete_flag, audit_flag, timeout_sign_up_flag, timeout_sign_up_start_time, timeout_sign_up_end_time, create_time, update_time, refund_flag, refund_start_time, refund_end_time, deposit_refund_task_flag, deposit_invoice_task_flag, package_flag, package_few, package_price, package_remind_flag, package_remind, is_open_real, prompt_copy, entry_notice, is_limited, temporary_member_sign_up_flag, view_enter_num_flag
+    </sql>
+
+    <select id="getMemberConfigByActivityId" resultType="com.taomz.mini.apps.dto.activity.ActivityMemberConfigDTO">
+    SELECT * from m_activity_member_config where activity_id = #{activityId}
+    </select>
+    <select id="getApplyCount" resultType="int">
+    SELECT
+        count(DISTINCT b.apply_phone) applyNum
+    FROM
+        m_activity_apply a
+    INNER JOIN m_activity_member_apply b ON a.id = b.apply_id
+    AND a.activity_id = #{activityId}
+  </select>
+
+</mapper>

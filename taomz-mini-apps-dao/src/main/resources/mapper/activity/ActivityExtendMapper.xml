@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.taomz.mini.apps.dao.mapper.activity.ActivityExtendMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.taomz.mini.apps.model.activity.ActivityExtend">
+        <id column="id" property="id" />
+        <result column="activity_id" property="activityId" />
+        <result column="process_type" property="processType" />
+        <result column="process" property="process" />
+        <result column="introduction" property="introduction" />
+        <result column="fee_remark" property="feeRemark" />
+        <result column="relation_activity" property="relationActivity" />
+        <result column="create_time" property="createTime" />
+        <result column="update_time" property="updateTime" />
+    </resultMap>
+
+    <resultMap id="viewResultMap" type="com.taomz.mini.apps.dto.activity.ActivityExtendDTO">
+        <id column="id" jdbcType="INTEGER" property="activityExtendId" />
+        <result column="activity_id" jdbcType="INTEGER" property="activityId" />
+        <result column="relation_activity" jdbcType="VARCHAR" property="relationActivity" />
+        <result column="process_type" jdbcType="SMALLINT" property="processType" />
+        <result column="process" jdbcType="LONGVARCHAR" property="process" />
+        <result column="introduction" jdbcType="LONGVARCHAR" property="introduction" />
+        <result column="fee_remark" jdbcType="LONGVARCHAR" property="feeRemark" />
+    </resultMap>
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, activity_id, process_type, process, introduction, fee_remark, relation_activity, create_time, update_time
+    </sql>
+    <select id="getByActivityId" resultMap="viewResultMap">
+    select * from m_activity_extend where activity_id = #{activityId}
+  </select>
+
+</mapper>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.taomz.mini.apps.dao.mapper.activity.LiveMeetingMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.taomz.mini.apps.model.activity.LiveMeeting">
+        <id column="id" property="id" />
+        <result column="name" property="name" />
+        <result column="room_id" property="roomId" />
+        <result column="push_url" property="pushUrl" />
+        <result column="show_time" property="showTime" />
+        <result column="show_duration" property="showDuration" />
+        <result column="access_user_number" property="accessUserNumber" />
+        <result column="thumb_up_number" property="thumbUpNumber" />
+        <result column="status" property="status" />
+        <result column="create_time" property="createTime" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, name, room_id, push_url, show_time, show_duration, access_user_number, thumb_up_number, status, create_time
+    </sql>
+
+</mapper>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.taomz.mini.apps.dao.mapper.user.UserCategoryMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.taomz.mini.apps.model.user.UserCategory">
+        <id column="id" property="id" />
+        <result column="user_id" property="userId" />
+        <result column="category_type" property="categoryType" />
+        <result column="grade_id" property="gradeId" />
+        <result column="status" property="status" />
+        <result column="initiate_time" property="initiateTime" />
+        <result column="last_initiate_time" property="lastInitiateTime" />
+        <result column="expiry_time" property="expiryTime" />
+        <result column="create_time" property="createTime" />
+        <result column="is_try_member" property="isTryMember" />
+        <result column="apply_try_member" property="applyTryMember" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, user_id, category_type, grade_id, status, initiate_time, last_initiate_time, expiry_time, create_time, is_try_member, apply_try_member
+    </sql>
+
+</mapper>

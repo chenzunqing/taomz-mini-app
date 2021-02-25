@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.taomz.mini.apps.dao.mapper.user.ShopInfoMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.taomz.mini.apps.model.user.ShopInfo">
+        <id column="id" property="id" />
+        <result column="platform_code" property="platformCode" />
+        <result column="third_shop_id" property="thirdShopId" />
+        <result column="third_shop_name" property="thirdShopName" />
+        <result column="third_shop_url" property="thirdShopUrl" />
+        <result column="monthly_turnover" property="monthlyTurnover" />
+        <result column="monthly_sales_images" property="monthlySalesImages" />
+        <result column="main_category" property="mainCategory" />
+        <result column="main_brand" property="mainBrand" />
+        <result column="shop_type" property="shopType" />
+        <result column="unit_price" property="unitPrice" />
+        <result column="shop_describe" property="shopDescribe" />
+        <result column="logistics_methods" property="logisticsMethods" />
+        <result column="logo_images" property="logoImages" />
+        <result column="follower_num" property="followerNum" />
+        <result column="page_view" property="pageView" />
+        <result column="advisory_num" property="advisoryNum" />
+        <result column="actual_page_view" property="actualPageView" />
+        <result column="actual_advisory_num" property="actualAdvisoryNum" />
+        <result column="actual_follower_num" property="actualFollowerNum" />
+        <result column="initials" property="initials" />
+        <result column="user_id" property="userId" />
+        <result column="status" property="status" />
+        <result column="is_main_shop" property="isMainShop" />
+        <result column="is_delete" property="isDelete" />
+        <result column="create_time" property="createTime" />
+        <result column="update_time" property="updateTime" />
+        <result column="sub_user_id" property="subUserId" />
+        <result column="remarks" property="remarks" />
+        <result column="trade_about" property="tradeAbout" />
+        <result column="user_no" property="userNo" />
+        <result column="buss_story" property="bussStory" />
+        <result column="shop_category" property="shopCategory" />
+        <result column="province" property="province" />
+        <result column="city" property="city" />
+        <result column="district" property="district" />
+        <result column="address" property="address" />
+        <result column="shop_describe_type" property="shopDescribeType" />
+        <result column="is_update" property="isUpdate" />
+        <result column="is_temp" property="isTemp" />
+        <result column="business_type" property="businessType" />
+        <result column="receiver_address" property="receiverAddress" />
+        <result column="receiver_name" property="receiverName" />
+        <result column="receiver_mobile" property="receiverMobile" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, platform_code, third_shop_id, third_shop_name, third_shop_url, monthly_turnover, monthly_sales_images, main_category, main_brand, shop_type, unit_price, shop_describe, logistics_methods, logo_images, follower_num, page_view, advisory_num, actual_page_view, actual_advisory_num, actual_follower_num, initials, user_id, status, is_main_shop, is_delete, create_time, update_time, sub_user_id, remarks, trade_about, user_no, buss_story, shop_category, province, city, district, address, shop_describe_type, is_update, is_temp, business_type, receiver_address, receiver_name, receiver_mobile
+    </sql>
+
+    <select id="mainShopId" resultType="java.lang.Integer">
+        SELECT
+            id
+        FROM t_shop_info
+        WHERE
+            user_id = #{userId}
+            <if test="status != null">
+                AND status = #{status}
+            </if>
+            AND is_main_shop = 1
+            AND is_delete = 0
+    </select>
+
+</mapper>

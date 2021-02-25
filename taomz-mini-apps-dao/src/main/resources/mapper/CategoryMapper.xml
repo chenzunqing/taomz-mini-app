@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.taomz.mini.apps.dao.mapper.CategoryMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.taomz.mini.apps.model.Category">
+        <id column="id" property="id" />
+        <result column="name" property="name" />
+        <result column="main_id" property="mainId" />
+        <result column="lev" property="lev" />
+        <result column="pid" property="pid" />
+        <result column="delete_flag" property="deleteFlag" />
+        <result column="create_time" property="createTime" />
+        <result column="update_time" property="updateTime" />
+        <result column="type" property="type" />
+        <result column="sort" property="sort" />
+        <result column="img_url" property="imgUrl" />
+        <result column="publish_status" property="publishStatus" />
+    </resultMap>
+
+    <resultMap type="com.taomz.mini.apps.dto.CategoryDTO" id="ViewResultMap">
+        <id property="categoryId" jdbcType="INTEGER" column="id"/>
+        <result property="lev" jdbcType="INTEGER" column="lev"/>
+        <result property="name" jdbcType="VARCHAR" column="name"/>
+        <result property="pid" jdbcType="INTEGER" column="pid"/>
+        <result property="imgUrl" jdbcType="VARCHAR" column="img_url"/>
+        <result property="sort" jdbcType="INTEGER" column="sort"/>
+        <result property="type" jdbcType="INTEGER" column="type"/>
+        <result column="publish_status" jdbcType="SMALLINT" property="publishStatus"/>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, `name`, main_id, lev, pid, delete_flag, create_time, update_time, type, sort, img_url, publish_status
+    </sql>
+
+    <select id="getAllCategory" resultMap="ViewResultMap">
+        SELECT
+            <include refid="Base_Column_List"/>
+        FROM
+             t_category
+        where delete_flag = 1
+            <if test="pid != null">
+                AND pid = #{pid}
+            </if>
+            <if test="lev != 0 and lev != null">
+                AND lev = #{lev}
+            </if>
+            <if test="type != 0">
+                AND type = #{type}
+            </if>
+            <if test="publishStatus != null">
+                AND publish_status = #{publishStatus}
+            </if>
+        ORDER BY
+            sort
+    </select>
+
+</mapper>

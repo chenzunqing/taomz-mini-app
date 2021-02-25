@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.taomz.mini.apps.dao.mapper.dict.DictDataMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.taomz.mini.apps.model.dict.DictData">
+        <id column="id" property="id" />
+        <result column="dict_type" property="dictType" />
+        <result column="dict_code" property="dictCode" />
+        <result column="dict_name" property="dictName" />
+        <result column="has_child" property="hasChild" />
+        <result column="parent_id" property="parentId" />
+        <result column="sort" property="sort" />
+        <result column="delete_flag" property="deleteFlag" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, dict_type, dict_code, dict_name, has_child, parent_id, sort, delete_flag
+    </sql>
+    <select id="listDictByType" resultType="com.taomz.mini.apps.dto.DictDataDTO">
+     SELECT * from t_dict_data WHERE dict_type = #{dictType} and delete_flag = 1 and parent_id is null  order by sort
+  </select>
+
+    <select id="listDictByPid" resultType="com.taomz.mini.apps.dto.DictDataDTO">
+     SELECT * from t_dict_data WHERE parent_id = #{parentId} and delete_flag = 1 order by sort
+  </select>
+
+</mapper>

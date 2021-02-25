@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.taomz.mini.apps.dao.mapper.user.UserPayDetailMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.taomz.mini.apps.model.user.UserPayDetail">
+        <id column="id" property="id" />
+        <result column="title" property="title" />
+        <result column="start_time" property="startTime" />
+        <result column="end_time" property="endTime" />
+        <result column="order_code" property="orderCode" />
+        <result column="business_id" property="businessId" />
+        <result column="order_type" property="orderType" />
+        <result column="pay_type" property="payType" />
+        <result column="amount" property="amount" />
+        <result column="status" property="status" />
+        <result column="user_id" property="userId" />
+        <result column="create_time" property="createTime" />
+        <result column="is_new_agreement" property="isNewAgreement" />
+        <result column="remark" property="remark" />
+        <result column="flow_id" property="flowId" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, title, start_time, end_time, order_code, business_id, order_type, pay_type, amount, status, user_id, create_time, is_new_agreement, remark, flow_id
+    </sql>
+
+    <resultMap id="FindPageMap" type="com.taomz.mini.apps.dto.user.UserPayDetailDTO">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="title" jdbcType="VARCHAR" property="title"/>
+        <result column="startTime" jdbcType="TIMESTAMP" property="startTime"/>
+        <result column="endTime" jdbcType="TIMESTAMP" property="endTime"/>
+        <result column="orderCode" jdbcType="VARCHAR" property="orderCode"/>
+        <result column="orderType" jdbcType="SMALLINT" property="orderType"/>
+        <result column="payType" jdbcType="SMALLINT" property="payType"/>
+        <result column="orderName" jdbcType="VARCHAR" property="orderName"/>
+        <result column="amount" jdbcType="DECIMAL" property="amount"/>
+        <result column="invoiceAmount" jdbcType="DECIMAL" property="invoiceAmount"/>
+        <result column="payUserName" jdbcType="VARCHAR" property="payUserName"/>
+        <result column="remark" jdbcType="VARCHAR" property="remark"/>
+        <result column="orderStatus" jdbcType="SMALLINT" property="orderStatus"/>
+        <result column="order_type" jdbcType="SMALLINT" property="type"/>
+        <result column="paymentTime" jdbcType="TIMESTAMP" property="paymentTime"/>
+    </resultMap>
+
+	<select id="findPage" resultMap="FindPageMap">
+        SELECT
+            IFNULL( d.id, o.id ) id,
+            IF ( o.order_type = 4 or o.order_type = 3, d.title, '购买课程' ) title,
+            IFNULL( d.start_time, '' ) startTime,
+            IFNULL( d.end_time, '' ) endTime,
+            o.order_code orderCode,
+            CASE o.order_type
+                WHEN 3 THEN
+                    '品牌'
+                WHEN 4 THEN
+                    '会员'
+                WHEN 2 THEN
+                    '课程订单'
+            END orderType,
+            CASE o.pay_type
+                WHEN 0 THEN
+                    '支付宝'
+                WHEN 1 THEN
+                    '微信'
+                WHEN 2 THEN
+                    '银行卡支付'
+                WHEN 3 THEN
+                    '线下付款'
+            END payType,
+            CASE o.order_type
+                WHEN 3 THEN
+                    '品牌缴费'
+                WHEN 4 THEN
+                    '会员缴费'
+                WHEN 2 THEN
+                    d.title
+            END orderName,
+            o.payment amount,
+            o.invoice_amount invoiceAmount,
+            r.buyed_id payUserName,
+            d.remark,
+            o.order_type,
+            o.order_status orderStatus,
+            o.payment_time paymentTime
+        FROM
+            t_order o
+            INNER JOIN t_pay_record r ON o.order_code = r.order_id
+            INNER JOIN t_user_pay_detail d ON o.order_code = d.order_code
+        WHERE
+            o.order_status = 3
+            AND o.user_id = #{param.userId}
+        <choose>
+            <when test="param.orderType != null">
+                AND o.order_type = #{param.orderType}
+            </when>
+            <otherwise>
+                AND o.order_type = 4
+            </otherwise>
+        </choose>
+        ORDER BY
+        o.create_time DESC
+    </select>
+
+</mapper>

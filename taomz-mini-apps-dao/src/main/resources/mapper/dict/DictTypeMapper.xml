@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.taomz.mini.apps.dao.mapper.dict.DictTypeMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.taomz.mini.apps.model.dict.DictType">
+        <id column="id" property="id" />
+        <result column="dict_type" property="dictType" />
+        <result column="dict_type_name" property="dictTypeName" />
+        <result column="create_user_no" property="createUserNo" />
+        <result column="create_time" property="createTime" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, dict_type, dict_type_name, create_user_no, create_time
+    </sql>
+
+</mapper>

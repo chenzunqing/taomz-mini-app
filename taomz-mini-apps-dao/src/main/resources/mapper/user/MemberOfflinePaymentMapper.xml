@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.taomz.mini.apps.dao.mapper.user.MemberOfflinePaymentMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.taomz.mini.apps.model.user.MemberOfflinePayment">
+        <id column="id" property="id" />
+        <result column="user_id" property="userId" />
+        <result column="order_code" property="orderCode" />
+        <result column="order_type" property="orderType" />
+        <result column="total_fee" property="totalFee" />
+        <result column="pay_account_name" property="payAccountName" />
+        <result column="certificate_num" property="certificateNum" />
+        <result column="certificate_img" property="certificateImg" />
+        <result column="confirm_status" property="confirmStatus" />
+        <result column="refusal_reason" property="refusalReason" />
+        <result column="is_renewal" property="isRenewal" />
+        <result column="pay_record_id" property="payRecordId" />
+        <result column="sub_user_id" property="subUserId" />
+        <result column="create_time" property="createTime" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, user_id, order_code, order_type, total_fee, pay_account_name, certificate_num, certificate_img, confirm_status, refusal_reason, is_renewal, pay_record_id, sub_user_id, create_time
+    </sql>
+
+    <select id="queryBaMOPDetail" resultType="com.taomz.mini.apps.dto.MemberOfflinePaymentDetailDTO">
+        SELECT
+            p.id,
+            p.order_code,
+            p.total_fee,
+            p.pay_account_name,
+            CONCAT(
+                    LEFT ( p.certificate_num, LENGTH( p.certificate_num ) - 3 ), '**', RIGHT ( p.certificate_num, 1 )
+                ) certificate_num,
+            p.certificate_img,
+            c.company_name,
+            i.third_shop_name mainShopName,
+            CONCAT( LEFT ( u.phone, 3 ), ' **** ', RIGHT ( u.phone, 4 ) ) phone,
+            p.refusal_reason,
+            p.create_time,
+            p.confirm_status,
+            p.is_renewal
+        FROM
+            t_member_offline_payment p
+                LEFT JOIN t_user u ON p.user_id = u.id
+                LEFT JOIN t_company c ON p.user_id = c.user_id
+                LEFT JOIN t_shop_info i ON p.user_id = i.user_id AND i.is_main_shop = 1
+        WHERE
+            p.order_code = #{orderCode}
+    </select>
+
+</mapper>

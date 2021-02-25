@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.taomz.mini.apps.dao.mapper.goods.SpuMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.taomz.mini.apps.model.goods.Spu">
+        <id column="id" property="id" />
+        <result column="spu_name" property="spuName" />
+        <result column="main_img" property="mainImg" />
+        <result column="brand_id" property="brandId" />
+        <result column="category_id" property="categoryId" />
+        <result column="video_url" property="videoUrl" />
+        <result column="advertorial" property="advertorial" />
+        <result column="view_price" property="viewPrice" />
+        <result column="discount" property="discount" />
+        <result column="buy_flag" property="buyFlag" />
+        <result column="view_count" property="viewCount" />
+        <result column="collect_count" property="collectCount" />
+        <result column="stock_count" property="stockCount" />
+        <result column="sell_count" property="sellCount" />
+        <result column="publish_status" property="publishStatus" />
+        <result column="audit_status" property="auditStatus" />
+        <result column="create_time" property="createTime" />
+        <result column="update_time" property="updateTime" />
+        <result column="on_time" property="onTime" />
+        <result column="up_time" property="upTime" />
+        <result column="delete_flag" property="deleteFlag" />
+        <result column="user_id" property="userId" />
+        <result column="virtual_flag" property="virtualFlag" />
+        <result column="publish_channel" property="publishChannel" />
+        <result column="brand_prod_ser_id" property="brandProdSerId" />
+        <result column="prd_record_number" property="prdRecordNumber" />
+        <result column="price_type" property="priceType" />
+        <result column="uniform_price" property="uniformPrice" />
+        <result column="substitution_notes" property="substitutionNotes" />
+        <result column="sending_show" property="sendingShow" />
+        <result column="consult" property="consult" />
+        <result column="up_num" property="upNum" />
+        <result column="min_price" property="minPrice" />
+        <result column="max_price" property="maxPrice" />
+        <result column="min_gross_profit" property="minGrossProfit" />
+        <result column="max_gross_profit" property="maxGrossProfit" />
+        <result column="trade_type" property="tradeType" />
+        <result column="from_place" property="fromPlace" />
+        <result column="prd_number_img_url" property="prdNumberImgUrl" />
+        <result column="is_sample" property="isSample" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, spu_name, main_img, brand_id, category_id, video_url, advertorial, view_price, discount, buy_flag, view_count, collect_count, stock_count, sell_count, publish_status, audit_status, create_time, update_time, on_time, up_time, delete_flag, user_id, virtual_flag, publish_channel, brand_prod_ser_id, prd_record_number, price_type, uniform_price, substitution_notes, sending_show, consult, up_num, min_price, max_price, min_gross_profit, max_gross_profit, trade_type, from_place, prd_number_img_url, is_sample
+    </sql>
+
+    <!--库存扣减-->
+    <update id="decreaseStockNum">
+        UPDATE t_spu SET stock_count= stock_count - #{decreaseNum}, update_time=now()
+        where id= #{spuId}
+          AND stock_count >=  #{decreaseNum}
+    </update>
+
+    <!--库存增加-->
+    <update id="increaseStockNum">
+        UPDATE t_spu
+        SET stock_count =
+            CASE
+                WHEN #{increaseNum} + stock_count > 9999999 THEN
+                    9999999
+                ELSE
+                    #{increaseNum} + stock_count
+                END
+          , update_time=now()
+        WHERE
+            id = #{spuId}
+        <![CDATA[ AND stock_count < 9999999
+
+
+        ]]>
+    </update>
+
+    <!--销量扣减-->
+    <update id="decreaseSellNum">
+        UPDATE t_spu SET sell_count= sell_count - #{decreaseNum}, update_time=now()
+        where id= #{spuId}
+    </update>
+
+    <!--销量增加-->
+    <update id="increaseSellNum">
+        UPDATE t_spu
+        SET sell_count = #{increaseNum} + sell_count,
+            update_time=now()
+        WHERE
+            id = #{spuId}
+    </update>
+
+	<select id="qryGMSpuAppList" resultType="com.taomz.mini.apps.dto.goods.GMSpuDTO">
+        SELECT
+            spu.id AS spuId,
+            spu.spu_name AS spuName,
+            spu.main_img AS mainImg
+        FROM
+            t_spu spu
+        WHERE
+            spu.publish_status = 1
+          AND spu.audit_status = 1
+          AND spu.delete_flag = 1
+          AND spu.brand_id = #{brandId}
+        ORDER BY
+            spu.create_time DESC
+        LIMIT 3
+    </select>
+
+    <select id="qryWholesaleList" resultType="com.taomz.mini.apps.dto.goods.SpuDTO">
+        SELECT
+            brand.brand_name AS brandName,
+            brand.country_code as countryCode,
+            cu.`name` as fromPlaceBrand ,
+            spu.id AS spuId,
+            spu.spu_name AS spuName,
+            spu.main_img AS mainImg,
+            spu.from_place AS fromPlace,
+            brand.trade_types AS tradeType,
+            tss.is_main_push AS isMainPush,
+            tss.is_star AS isStar,
+            IF ( DATEDIFF( SYSDATE(), brand.update_time ) &lt;= 30, 'TRUE', 'FALSE' ) AS isNewOn,
+            (
+                ROUND((spu.consult*0.48),0) +
+                ROUND((spu.view_count*0.2),0) +
+                ROUND((spu.collect_count*0.32),0)
+            ) as isPersonFeel
+            FROM t_spu spu
+            INNER JOIN t_brand_basic_info brand ON brand.id = spu.brand_id
+            LEFT JOIN t_country cu ON cu.`code` = brand.country_code
+            LEFT JOIN t_spu_star tss on spu.id = tss.spu_id AND brand.id = tss.brand_id
+        WHERE
+            spu.publish_status =1
+            AND spu.audit_status =1
+            AND ISNULL( spu.substitution_notes )= 0
+            AND LENGTH( trim( spu.substitution_notes ))>0
+            <if test="param.brandName != null and param.brandName != ''">
+                AND brand.brand_name like CONCAT('%', ltrim(rtrim(#{param.brandName})), '%')
+            </if>
+            <if test="param.spuName != null and param.spuName != ''">
+                AND spu.spu_name like CONCAT('%', ltrim(rtrim(#{param.spuName})), '%')
+            </if>
+            <if test="null != param.categoryItems and param.categoryItems.size() > 0">
+                AND
+                <foreach collection="param.categoryItems" item="item" open="(" separator="OR" close=")">
+                    FIND_IN_SET(#{item}, brand.main_category )
+                </foreach>
+            </if>
+            <if test="param.tradeTypeItem != null and param.tradeTypeItem.size() > 0">
+                AND spu.trade_type IN
+                <foreach collection="param.tradeTypeItem" item="item" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+            <if test="param.countryCodeItem != null and param.countryCodeItem.size() > 0">
+                AND brand.country_code IN
+                <foreach collection="param.countryCodeItem" item="item" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+            <if test="param.authChannelItem != null and param.authChannelItem.size() > 0">
+                AND brand.auth_channel IN
+                <foreach collection="param.authChannelItem" item="item" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+            <if test="param.minGrossProfit != null">
+                AND spu.min_gross_profit >= #{param.minGrossProfit}
+            </if>
+            <if test="param.maxGrossProfit != null">
+                AND spu.max_gross_profit <![CDATA[ <= ]]> #{param.maxGrossProfit}
+            </if>
+        ORDER BY
+            spu.update_time DESC
+    </select>
+
+</mapper>

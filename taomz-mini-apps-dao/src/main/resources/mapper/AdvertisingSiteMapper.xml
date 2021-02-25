@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.taomz.mini.apps.common.mapper.AdvertisingSiteMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.taomz.mini.apps.model.AdvertisingSite">
+        <id column="id" property="id" />
+        <result column="ads_code" property="adsCode" />
+        <result column="ads_title" property="adsTitle" />
+        <result column="sub_title" property="subTitle" />
+        <result column="title_view_flag" property="titleViewFlag" />
+        <result column="ads_type" property="adsType" />
+        <result column="view_max_num" property="viewMaxNum" />
+        <result column="height" property="height" />
+        <result column="width" property="width" />
+        <result column="ads_desc" property="adsDesc" />
+        <result column="delete_flag" property="deleteFlag" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, ads_code, ads_title, sub_title, title_view_flag, ads_type, view_max_num, height, width, ads_desc, delete_flag
+    </sql>
+
+</mapper>

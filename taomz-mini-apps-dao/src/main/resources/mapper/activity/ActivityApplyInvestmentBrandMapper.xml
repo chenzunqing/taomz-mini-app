@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.taomz.mini.apps.dao.mapper.activity.ActivityApplyInvestmentBrandMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.taomz.mini.apps.model.activity.ActivityApplyInvestmentBrand">
+        <id column="id" property="id" />
+        <result column="booth_number_id" property="boothNumberId" />
+        <result column="apply_id" property="applyId" />
+        <result column="booth_number" property="boothNumber" />
+        <result column="draft_booth_number" property="draftBoothNumber" />
+        <result column="brand_id" property="brandId" />
+        <result column="create_time" property="createTime" />
+        <result column="audit_state" property="auditState" />
+        <result column="audit_time" property="auditTime" />
+        <result column="audit_admin" property="auditAdmin" />
+        <result column="audit_remark" property="auditRemark" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, booth_number_id, apply_id, booth_number, draft_booth_number, brand_id, create_time, audit_state, audit_time, audit_admin, audit_remark
+    </sql>
+
+    <select id="getApplyBrandList" resultType="com.taomz.mini.apps.dto.activity.ActivityBrandDTO">
+        SELECT DISTINCT
+            flow.brand_id,
+            bb.brand_name,
+            bb.brand_logo,
+            bb.brand_name_en
+        FROM
+            m_activity_apply_investment_brand flow
+        INNER JOIN m_activity_apply b ON b.id = flow.apply_id
+        INNER JOIN t_brand_basic_info bb ON bb.id = flow.brand_id
+
+        AND b.activity_id IN (${relationActivity})
+        AND b.audit_state IN (4, 6, 10)
+        AND b.signup_type = 2
+        order by flow.id
+        LIMIT 8
+    </select>
+
+</mapper>

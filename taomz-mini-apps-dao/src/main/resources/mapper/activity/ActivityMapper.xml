@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.taomz.mini.apps.dao.mapper.activity.ActivityMapper">
+
+
+    <select id="signingUpActivity" resultType="com.taomz.mini.apps.dto.activity.ActivityAppListDTO">
+        SELECT
+        t.id activityId,
+        t.activity_name,
+        t.start_time,
+        t.end_time,
+        t.main_image,
+        t.cover_image,
+        t.activity_role,
+        ap.activity_way
+        FROM
+        m_activity t
+        INNER JOIN m_activity_product ap ON ap.id = t.act_prod_id
+        WHERE
+        t.publish_state  =1
+        AND t.delete_flag = 1
+        <if test="activityId != null">
+            AND t.id = #{activityId}
+        </if>
+
+        <![CDATA[
+        AND NOW() < t.start_time
+                    AND (EXISTS(select 1 from m_activity_investment_config b where b.activity_id=t.id and b.delete_flag = 1
+        and NOW() BETWEEN b.brand_start_time and b.brand_end_time or NOW() < b.brand_start_time)
+
+        OR EXISTS(select 1 from m_activity_member_config m where m.activity_id=t.id and m.delete_flag = 1
+        and ((NOW() BETWEEN m.member_start_time and m.member_end_time or NOW() < m.member_start_time)
+OR (m.timeout_sign_up_flag = 1 and NOW() BETWEEN m.timeout_sign_up_start_time and m.timeout_sign_up_end_time)
+))
+
+        OR EXISTS(select 1 from t_non_mem_config m where m.activity_id=t.id and m.status = 1
+        and ((NOW() BETWEEN m.sign_up_start_time and m.sign_up_end_time or NOW() < m.sign_up_start_time)
+		OR (m.scene_sign_up_flag = 1 and NOW() BETWEEN m.scene_up_start_time and m.scene_up_end_time)
+        ) ))
+
+ AND (NOT EXISTS(select 1 from m_activity_investment_config b where b.activity_id=t.id and b.delete_flag = 1
+        and NOW() > b.brand_end_time)
+
+        AND NOT EXISTS(select 1 from m_activity_member_config m where m.activity_id=t.id and m.delete_flag = 1
+        and NOW() >  m.member_end_time)
+
+        AND NOT EXISTS(select 1 from t_non_mem_config m where m.activity_id=t.id and m.status = 1
+        and NOW() > m.sign_up_end_time)
+
+        )
+  order by t.top_flag desc,t.top_time desc,t.id desc
+
+
+        ]]>
+    </select>
+
+
+    <select id="getSigningUpScheduleScreening" resultType="com.taomz.mini.apps.dto.activity.vo.ActivityScheduleScreeningVo">
+        SELECT
+        t.id activityId,
+        t.start_time,
+        ap.activity_way,
+        aa.city
+        FROM
+        m_activity t
+        INNER JOIN m_activity_address aa ON t.id = aa.activity_id
+        INNER JOIN m_activity_product ap ON ap.id = t.act_prod_id
+        WHERE
+        t.publish_state =1
+        AND t.delete_flag = 1
+      <![CDATA[
+          AND NOW() < t.start_time
+                    AND (EXISTS(select 1 from m_activity_investment_config b where b.activity_id=t.id and b.delete_flag = 1
+        and NOW() BETWEEN b.brand_start_time and b.brand_end_time or NOW() < b.brand_start_time)
+
+        OR EXISTS(select 1 from m_activity_member_config m where m.activity_id=t.id and m.delete_flag = 1
+        and ((NOW() BETWEEN m.member_start_time and m.member_end_time or NOW() < m.member_start_time)
+OR (m.timeout_sign_up_flag = 1 and NOW() BETWEEN m.timeout_sign_up_start_time and m.timeout_sign_up_end_time)
+))
+
+        OR EXISTS(select 1 from t_non_mem_config m where m.activity_id=t.id and m.status = 1
+        and ((NOW() BETWEEN m.sign_up_start_time and m.sign_up_end_time or NOW() < m.sign_up_start_time)
+		OR (m.scene_sign_up_flag = 1 and NOW() BETWEEN m.scene_up_start_time and m.scene_up_end_time)
+        ) ))
+
+ AND (NOT EXISTS(select 1 from m_activity_investment_config b where b.activity_id=t.id and b.delete_flag = 1
+        and NOW() > b.brand_end_time)
+
+        AND NOT EXISTS(select 1 from m_activity_member_config m where m.activity_id=t.id and m.delete_flag = 1
+        and NOW() >  m.member_end_time)
+
+        AND NOT EXISTS(select 1 from t_non_mem_config m where m.activity_id=t.id and m.status = 1
+        and NOW() > m.sign_up_end_time)
+
+        )
+
+
+        ]]>
+         order by t.start_time
+    </select>
+    <select id="getActivityList" resultType="com.taomz.mini.apps.dto.activity.ActivityAppListDTO">
+    <![CDATA[
+             SELECT
+            t.id activityId,
+            t.activity_name,
+            t.start_time,
+            t.end_time,
+            t.main_image,
+            t.cover_image,
+            t.video_url,
+            t.meeting_live_id,
+            ap.activity_way,
+            CASE WHEN NOW() BETWEEN t.start_time and t.end_time THEN 1
+            WHEN NOW()< t.start_time THEN 2
+            ELSE 3 END AS state
+            FROM
+            m_activity t
+            INNER JOIN m_activity_product ap ON ap.id = t.act_prod_id
+            WHERE
+            t.publish_state = 1
+            AND t.delete_flag = 1
+
+            AND (EXISTS(select 1 from m_activity_investment_config b where b.activity_id=t.id and b.delete_flag = 1
+        and NOW()> b.brand_end_time )
+
+        OR EXISTS(select 1 from m_activity_member_config m where m.activity_id=t.id and m.delete_flag = 1
+        and NOW()>  m.member_end_time)
+
+        OR EXISTS(select 1 from t_non_mem_config m where m.activity_id=t.id and m.status = 1
+        and NOW()> m.sign_up_end_time)
+)
+
+            order by t.top_flag desc,t.top_time desc, state
+
+        ]]>
+    </select>
+
+
+    <select id="getProdChildActivity" resultType="com.taomz.mini.apps.dto.activity.ActivityAppListDTO">
+        <![CDATA[
+            SELECT
+            t.id activityId,
+            t.activity_name,
+            t.start_time,
+            t.end_time,
+            t.main_image,
+            t.cover_image
+            FROM
+            m_activity t
+            WHERE
+            t.act_prod_id = #{prodActId}
+            AND t.id <> #{activityId}
+            AND t.publish_state =1
+            AND t.delete_flag = 1
+
+            AND NOW() < t.start_time
+
+            AND (EXISTS(select 1 from m_activity_investment_config b where b.activity_id=t.id and b.delete_flag = 1
+            and NOW() BETWEEN b.brand_start_time and b.brand_end_time or NOW() < b.brand_start_time)
+
+            OR EXISTS(select 1 from m_activity_member_config m where m.activity_id=t.id and m.delete_flag = 1
+            and NOW() BETWEEN m.member_start_time and m.member_end_time or NOW() < m.member_start_time)
+
+            OR EXISTS(select 1 from t_non_mem_config m where m.activity_id=t.id and m.status = 1
+            and NOW() BETWEEN m.sign_up_start_time and m.sign_up_end_time or NOW() < m.sign_up_start_time)
+
+            )  order by t.top_flag desc,t.top_time desc,t.id desc
+
+        ]]>
+</select>
+</mapper>

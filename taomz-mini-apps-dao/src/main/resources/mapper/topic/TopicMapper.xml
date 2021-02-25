@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.taomz.mini.apps.dao.mapper.topic.TopicMapper">
+    <select id="findList" resultType="com.taomz.mini.apps.model.topic.TTopic">
+        SELECT
+        id,
+        topic_name AS topicName,
+        main_image AS mainImage,
+        type,
+        plate_id AS plateId,
+        content,
+        jump_column_value AS jumpColumnValue,
+        jump_url AS jumpUrl,
+        jump_param AS jumpParam
+    from t_topic
+    WHERE
+        delete_flag = 1
+    AND publish_status = 1
+    AND plate_id =#{id}
+    order by create_time desc
+    </select>
+</mapper>
